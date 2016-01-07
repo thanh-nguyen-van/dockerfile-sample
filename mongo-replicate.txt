@@ -1,0 +1,57 @@
+CONFIGURE MONGO REPLICATE (2 NODES, 1 FIXED PRIMARY, 1 SECONDARY)
+
+ip_address  mongoslave
+ip_address mongomaster 
+
+in /etc/hosts file
+
+ON PRIMARY: 
+
+rs.initiate() on PRIMARY only
+
+rsconf = {
+           _id: "legiti",
+           members: [
+                      {
+                       _id: 0,
+                       host: "mongomaster:27017"
+                      }
+                    ]
+         }
+
+
+rs.reconfig(rsconf, {force: true})
+
+rs.add("mongoslave")
+
+
+ON SECONDARY:
+
+rs.slaveOk()            // 
+
+cfg = rs.conf()       
+
+cfg.members[1].priority = 0
+
+rs.reconfig(cfg, {force: true})
+
+//////////////////////
+
+show list alll collections in mongo shell.
+
+db.getCollectionNames()
+
+Get index info of collection name : identitycounters
+
+db.identitycounters.getIndexes()
+
+
+ON PRIMARY : //prevent primary become secondary when decondary is down.
+
+cfg = rs.conf()
+cfg.members[0].votes = 1 // the primary (by default votes = 1)
+cfg.members[1].votes = 0 // the secondary
+cfg.members[2].votes = 0 // the arbiter
+rs.reconfig(cfg)
+
+db.test.find().skip(20).limit(5)  // show all list begin at 20 to 24 (5 limit)

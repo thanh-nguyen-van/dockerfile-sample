@@ -1,0 +1,55 @@
+{% extends 'layout.html' %}
+
+{% block title %}Forgot Password{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+  //$('#resetPasswordForm').parsley();
+  
+    $(document).ready(function(){
+     $('#resetPasswordForm').parsley().on('field:validated', function() {
+        var ok = $('.parsley-error').length === 0;
+      })
+      .on('form:submit', function() {
+        console.log("is valid ", jQuery( '#resetPasswordForm' ).parsley( 'isValid' ))
+        var form_data = $("#resetPasswordForm").serializeObject();
+        console.log("form_data",form_data);
+        sendAjax("/users/reset-password", form_data, function( status, data ){
+          if ( !status ){
+            return appAlert( data );
+          }else{
+            appAlert( "We sent the email to reset your account, Please check" );
+            location.href = "/login";
+          }
+        });
+        return false; // Don't submit form for this demo
+      });
+
+
+    });
+
+
+
+</script>
+{% endblock %}
+
+
+
+{% block content %}
+  <div  class="well">
+    <form action="//users/reset-password" id="resetPasswordForm" method="POST" data-parsley-validate="">
+      <h3>Forgot Password</h3>
+      <div class="form-group">
+        <label for="email">Email address</label>
+        <input type="email" class="form-control" name="Email" placeholder="Email" data-parsley-type="email"  data-trigger="change" required="" id="email">
+      </div>
+     
+      
+      <button type="submit" id="submitForm" class="btn btn-default">Reset password</button>
+      <a href="/register">Register ?</a>
+      <a href="/login">Login</a>
+    </form>
+  </div>
+
+
+{% endblock %}

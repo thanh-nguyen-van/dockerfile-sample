@@ -1,0 +1,110 @@
+{% extends 'layout.html' %}
+
+{% block title %}Register{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+  //$('#registerForm').parsley();
+    $(document).ready(function(){
+      $('#submitForm').click(function(e){
+    
+        $( '#registerForm' ).parsley( 'validate' );
+        //console.log(jQuery( '#registerForm' ).parsley( 'isValid' ));
+        if ( !jQuery( '#registerForm' ).parsley( 'isValid' )){
+          console.log("not validate");
+          return;          
+        }
+
+        else{
+          console.log("valid");
+        }
+        
+        e.preventDefault();
+
+      });
+    });
+
+
+
+</script>
+{% endblock %}
+
+
+
+{% block content %}
+  
+  <form action="/register" id="registerForm" method="POST" data-validate="parsley">
+    <div class="form-group">
+      <label for="FirstName">First Name</label>
+      <input type="text" class="form-control" name="FirstName" placeholder="First Name" data-parsley-minlength="2"  data-trigger="change" data-required="true">
+    </div>
+    <div class="form-group">
+      <label for="LastName">Last Name</label>
+      <input type="text" class="form-control" name="LastName" placeholder="Last Name" data-parsley-minlength="2"  data-trigger="change" data-required="true">
+    </div>    
+    <div class="form-group">
+      <label for="email">Email address</label>
+      <input type="email" class="form-control" name="email" placeholder="Email" data-parsley-type="email"  data-trigger="change" data-required="true">
+    </div>
+    <div class="form-group">
+      <label for="cemail">Confirm email address</label>
+      <input type="email" class="form-control" name="cemail" placeholder="Email">
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" class="form-control" name="password"  placeholder="Password" data-parsley-minlength="6"  data-trigger="change" data-required="true"> 
+    </div>
+    <div class="form-group">
+      <label for="cpassword">Confirm Password</label>
+      <input type="password" class="form-control" name="cpassword"  placeholder="Password" data-parsley-minlength="6">
+    </div>
+    <div class="form-group">
+      <label for="CompanyName">Company Name</label>
+      <input type="text" class="form-control" name="CompanyName" placeholder="Company Name">
+    </div>
+    <div class="form-group">
+      <label for="Phone">Phone</label>
+      <input type="text" class="form-control" name="Phone" placeholder="Phone">
+    </div>
+    <div class="form-group">
+      <label for="MobilePhone">Mobile Phone</label>
+      <input type="text" class="form-control" name="MobilePhone" placeholder="Mobile Phone">
+    </div>
+    <div class="form-group">
+      <label for="Address1">Address 1</label>
+      <input type="text" class="form-control" name="Address1" placeholder="Address 1">
+    </div>
+    <div class="form-group">
+      <label for="Address2">Address 2</label>
+      <input type="text" class="form-control" name="Address2" placeholder="Address 2">
+    </div>
+    <div class="form-group">
+      <label for="City">City</label>
+      <input type="text" class="form-control" name="City" placeholder="City">
+    </div>
+    <div class="form-group">
+      <label for="State">State</label>
+      <input type="text" class="form-control" name="State" placeholder="State">
+    </div>
+    <div class="form-group">
+      <label for="ZipCode">ZipCode</label>
+      <input type="text" class="form-control" name="ZipCode" placeholder="ZipCode">
+    </div>
+    <div class="row">
+      <div class="col-md-6 col-xs-6">
+        <div class="form-group">
+          <label for="Captcha">Captcha</label>
+          <input type="text" class="form-control" name="Captcha" placeholder="Captcha" data-parsley-length="[4]">
+        </div>
+      </div>
+      <div class="col-md-6 col-xs-6">
+        <p>&nbsp;</p>
+        <img src="/captcha" alt="Captcha" id="captcha">
+      </div>
+    </div>
+
+    <button type="button" id="submitForm" class="btn btn-default">Register</button>
+  </form>
+  
+
+{% endblock %}

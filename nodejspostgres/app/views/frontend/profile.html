@@ -1,0 +1,34 @@
+{% extends 'layout.html' %}
+
+{% block title %}user profile{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+
+</script>
+{% endblock %}
+
+
+
+{% block content %}
+  <div  class="well">
+    <h2>Welcome {{ user.Email }}</h2>
+    <a href="/logout">Logout</a>
+    <p>FirstName:{{ user.FirstName }}</p>
+    <p>TerritoryID: {{ user.TerritoryID }}</p>
+    <p>CompanyName: {{ user.CompanyName }}</p>
+    <p>FirstName: {{ user.FirstName }}</p>
+    <p>LastName: {{ user.LastName }}</p>
+    <p>Email: {{ user.Email }}</p>
+    <p>Phone: {{ user.Phone }}</p>
+    <p>MobilePhone: {{ user.MobilePhone }}</p>
+    <p>Address1: {{ user.Address1 }}</p>
+    <p>Address2: {{ user.Address2 }}</p>
+    <p>City: {{ user.City }}</p>
+    <p>State: {{ user.State }}</p>
+    <p>ZipCode: {{ user.ZipCode }}</p>
+    <p>Active: {{ user.Active }}</p>
+  </div>
+
+
+{% endblock %}

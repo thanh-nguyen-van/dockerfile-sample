@@ -1,0 +1,25 @@
+{
+  "port": 3000,
+  "env":"developement",
+  "page_title": "My Website",
+  "asset_version":2,
+  "template_version":1,
+  "page_description":"some description",
+  "domain":"localhost:3000",
+  "admin_email":"admin@dethoima.com",
+  "smtp_host":"smtp.mandrillapp.com",
+  "smtp_port":25,
+  "smtp_user":"bachvtuan@gmail.com",
+  "smtp_pass":"yyPsFU9QdKAonJjlU8gipA",
+  "maximum_file_upload":524288,
+  "redis":{
+    "host": "127.0.0.1",
+    "port": 6379
+  },
+  "db_url": "postgres://postgres:postgres@localhost/db1",
+  "user_table": "\"public\".\"dt_cust\"",
+  "customer_table": "\"public\".\"customer\"",
+  "tracking_table": "\"public\".\"tracking\"",
+  "country_table": "\"public\".\"countries\"",
+  "city_table": "\"public\".\"cities\""
+}

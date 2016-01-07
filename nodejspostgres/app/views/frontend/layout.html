@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title >{% block title %}My Site{% endblock %}</title>
+    <meta name="descrition">
+    <link rel="Shortcut Icon" href="/frontend/images/mobile.png" type="image/x-icon">
+    <link rel="stylesheet" href="/frontend/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/frontend/css/style.css">
+
+    <script type="text/javascript" src="/frontend/js/jquery-1.11.3.js"></script>
+    <script src="/frontend/js/parsleyjs/dist/parsley.min.js"></script>
+    <script src="/frontend/js/custom.js"></script>
+  </head>
+  <body>
+    <div class="container" style="margin:20px auto;">
+      {% block content %}{% endblock %}
+    </div>
+    {% block js %}{% endblock %}
+    <div class="loading">
+      <p>Please wait</p>
+    </div>
+  </body>
+</html>

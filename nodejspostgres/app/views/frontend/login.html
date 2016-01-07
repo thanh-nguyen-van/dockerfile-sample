@@ -1,0 +1,59 @@
+{% extends 'layout.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+  //$('#loginForm').parsley();
+  
+    $(document).ready(function(){
+     $('#loginForm').parsley().on('field:validated', function() {
+        var ok = $('.parsley-error').length === 0;
+        console.log("ok ", ok);
+      })
+      .on('form:submit', function() {
+        console.log("is valid ", jQuery( '#loginForm' ).parsley( 'isValid' ))
+        var form_data = $("#loginForm").serializeObject();
+        console.log("form_data",form_data);
+        sendAjax("/login", form_data, function( status, data ){
+          if ( !status ){
+            return appAlert( data );
+          }else{
+            location.href = "/profile";
+          }
+        });
+        return false; // Don't submit form for this demo
+      });
+
+
+    });
+
+
+
+</script>
+{% endblock %}
+
+
+
+{% block content %}
+  <div  class="well">
+    <form action="/login" id="loginForm" method="POST" data-parsley-validate="">
+      <h3>Login to System</h3>
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" class="form-control" name="username" placeholder="User Name"   data-parsley-minlength="2"  data-trigger="change" required="" data-parsley-maxlength="64" data-parsley-username="" >
+      </div>
+     
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" name="Password"  placeholder="Password" data-parsley-minlength="6"  data-trigger="change" required="" id="password"> 
+      </div>
+    
+      <button type="submit" id="submitForm" class="btn btn-default">Login</button>
+      <a href="/register">Register ?</a>
+      <a href="/forgot-password">Forgot password</a>
+    </form>
+  </div>
+
+
+{% endblock %}

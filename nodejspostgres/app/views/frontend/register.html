@@ -1,0 +1,173 @@
+{% extends 'layout.html' %}
+
+{% block title %}Register{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+  //$('#registerForm').parsley();
+    /*var form_data = {
+      "FirstName":"Tuan",
+      "LastName":"Van","Email":"tuan85e37@gmail.com","cemail":"tuan857@gmail.com","Password":"tamthoi","cpassword":"tamthoi","CompanyName":"","Phone":"0982946478","MobilePhone":"0982946478","Address1":"17 TAM BINH,  THU DUC DISTRICT","Address2":"","City":"Ho Chi Minh","State":"","ZipCode":"","Captcha":"4545","username":"tuanbach",
+      "TerritoryID":"23234234"
+    };*/
+
+    function renderState(){
+      var country_id = $("select[name='Country']").val();
+      sendAjax('/get-cities?country_id=' +country_id , {}, function( status, data ){
+        if (!status){
+          return;
+        }
+        $("select[name='State']").html("");
+        for( var i =0 ;i < data.length; i++ ){
+          var item = data[i];
+          $("select[name='State']").append( "<option value='"+ item.id +"' >" + item.name + "</option>" );
+        }
+      });
+    }
+
+    $(document).ready(function(){
+     $('#registerForm').parsley().on('field:validated', function() {
+        var ok = $('.parsley-error').length === 0;
+        console.log("ok ", ok);
+      })
+      .on('form:submit', function() {
+        console.log("is valid ", jQuery( '#registerForm' ).parsley( 'isValid' ))
+        var form_data = $("#registerForm").serializeObject();
+        sendAjax("/register", form_data, function( status, data ){
+          if ( !status ){
+            //refresh to get new captcha
+            $("#captcha").attr("src", "/captcha?t=" + new Date().getTime() );
+            return appAlert( data );
+          }else{
+            appAlert("Please check your email to active your account");
+            location.href = "/login";
+          }
+        });
+        return false; // Don't submit form for this demo
+      });
+      renderState();
+
+      $("select[name='Country']").on('change', function (e) {
+          renderState();
+      });
+/*
+      $("#test").click( function(){
+
+        sendAjax("/register", form_data, function( status, data ){
+          if ( !status ){
+            //refresh to get new captcha
+            $("#captcha").attr("src", "/captcha?t=" + new Date().getTime() );
+            return appAlert( data );
+          }else{
+            appAlert("Please check your email to active your account");
+            location.href = "/login";
+          }
+        });
+      });*/
+    });
+
+
+
+</script>
+{% endblock %}
+
+
+
+{% block content %}
+  
+  <form action="/register" id="registerForm" method="POST" data-parsley-validate="">
+    <div class="form-group">
+      <label for="FirstName">First Name</label>
+      <input type="text" class="form-control" name="FirstName" placeholder="First Name" data-parsley-minlength="2"  data-trigger="change" required="">
+    </div>
+    <div class="form-group">
+      <label for="LastName">Last Name</label>
+      <input type="text" class="form-control" name="LastName" placeholder="Last Name" data-parsley-minlength="2"  data-trigger="change" required="">
+    </div>    
+    <div class="form-group">
+      <label for="LastName">User Name</label>
+      <input type="text" class="form-control" name="username" placeholder="User Name" data-parsley-minlength="2"  data-trigger="change" required="" data-parsley-maxlength="64" data-parsley-username="" >
+    </div>
+    <div class="form-group">
+      <label for="email">Email address</label>
+      <input type="email" class="form-control" name="Email" placeholder="Email" data-parsley-type="email"  data-trigger="change" required="" id="email">
+    </div>
+    <div class="form-group">
+      <label for="cemail">Confirm email address</label>
+      <input type="email" class="form-control" name="cEmail" placeholder="Email" required="" data-parsley-equalto="#email">
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" class="form-control" name="Password"  placeholder="Password" data-parsley-minlength="6"  data-trigger="change" required="" id="password"> 
+    </div>
+    <div class="form-group">
+      <label for="cpassword">Confirm Password</label>
+      <input type="password" class="form-control" name="cPassword"  placeholder="Password" data-parsley-minlength="6" required="" data-parsley-equalto="#password">
+    </div>
+    <div class="form-group">
+      <label for="CompanyName">Company Name</label>
+      <input type="text" class="form-control" name="CompanyName" placeholder="Company Name">
+    </div>
+    <div class="form-group">
+      <label for="TerritoryID">Territory ID</label>
+      <input type="text" class="form-control" name="TerritoryID" placeholder="Territory ID">
+    </div>
+    
+    <div class="form-group">
+      <label for="Phone">Phone</label>
+      <input type="text" class="form-control" name="Phone" placeholder="Phone">
+    </div>
+    <div class="form-group">
+      <label for="MobilePhone">Mobile Phone</label>
+      <input type="text" class="form-control" name="MobilePhone" placeholder="Mobile Phone">
+    </div>
+    <div class="form-group">
+      <label for="Address1">Address 1</label>
+      <input type="text" class="form-control" name="Address1" placeholder="Address 1" required="">
+    </div>
+    <div class="form-group">
+      <label for="Address2">Address 2</label>
+      <input type="text" class="form-control" name="Address2" placeholder="Address 2">
+    </div>
+    <div class="form-group">
+      <label for="City">City</label>
+      <input type="text" class="form-control" name="City" placeholder="City" required="">
+    </div>
+    <div class="form-group">
+      <label for="Country">Country</label>
+      <select name="Country" required=""  class="form-control">
+
+        {% for country in countries %}  
+          <option value="{{ country.id }}">{{ country.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="State">State</label>
+      <select name="State" required=""  class="form-control">
+      </select>
+      
+    </div>
+    <div class="form-group">
+      <label for="ZipCode">ZipCode</label>
+      <input type="text" class="form-control" name="ZipCode" placeholder="ZipCode" required="">
+    </div>
+    <div class="row">
+      <div class="col-md-6 col-xs-6">
+        <div class="form-group">
+          <label for="Captcha">Captcha</label>
+          <input type="text" class="form-control" name="Captcha" placeholder="Captcha" required="">
+        </div>
+      </div>
+      <div class="col-md-6 col-xs-6">
+        <p>&nbsp;</p>
+        <img src="/captcha" alt="Captcha" id="captcha">
+      </div>
+    </div>
+
+    <button type="submit" id="submitForm" class="btn btn-default">Register</button>
+    <!-- <button id="test">Test</button> -->
+  </form>
+  
+
+{% endblock %}
