@@ -7,7 +7,7 @@
     "express": "4.x",
     "jade": "~1.7.0",
     "body-parser": "~1.8.2",
-    "method-override": "~2.2.0",
+    "method-override": "~3.0.0",
     "redis": "~0.12.1",
     "mongodb": "~1.4.12",
     "cli-color": "~0.3.2",
